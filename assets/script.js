@@ -6,20 +6,6 @@
             //First trivia question
             //Timer
             //Possible Answers as buttons
-        
-    //Timer starts 
-
-    //timer initialized
-        //FUNCTION
-        //set up timer
-        //timer set to 00:00
-        //append timer to timer div
-    
-    //timer starts counting
-        //FUNCTION
-
-    //time coverter
-        //FUNCTION
 
 
     //counter variable is initialized
@@ -48,7 +34,7 @@
     
     //Repeat for each question
 
-//Once all questions have been answered-- RESULTS SCREEN
+    //Once all questions have been answered-- RESULTS SCREEN
         //Give user results:
             //Questions answered Correctly
             //Questions answered incorrectly
@@ -56,14 +42,6 @@
 
         //Give option to reset/restart game
         //Give option to check out the code on github
-
-//TODO:
-    //whole game container
-    //play game button
-    //answer buttons
-    //
-    //list of questions
-    //
 
     const gameContainer = $('#game-container');
     const introContainer = $('#intro-container');
@@ -74,24 +52,28 @@
     const csTrivia = {
         //variable to access index of question, choices and answer...
         counter: 0,
+        score: 0,
+        incorrectAnswers: 0,
+        totalTime: '',
 
         //questions: object property for each question
-        questions: {question1: 'What year was the first computer invented?',
-                    question2: 'Which company first developed the Java programming language?',
-                    question3: 'What was the original name for Javascript?',
-                    question4: 'What year was Microsoft Founded?',
-                    question5: 'What does the acronym W3C represent?',
-                    question6: 'How much memory could the first floppy disc hold?',
-                    question7: 'How many bytes are in 2 Petabytes?',
-                    question8: 'Intel or AMD?',
-                    question9: 'What common element is used in the manufacture of computer chips?',
-                    question10: 'Does the console display every answer to these questions?',
+        questions: {
+            question1: 'What year was the first computer invented?',
+            question2: 'Which company first developed the Java programming language?',
+            question3: 'What was the original name for Javascript?',
+            question4: 'What year was Microsoft Founded?',
+            question5: 'What does the acronym W3C represent?',
+            question6: 'How much memory could the first floppy disc hold?',
+            question7: 'How many bytes are in 2 Petabytes?',
+            question8: 'Intel or AMD?',
+            question9: 'What common element is used in the manufacture of computer chips?',
+            question10: 'Does the console display every answer to these questions?',
 
         },
 
         //choices: possible answers for each question
         choices: {
-            choices1: ['A','B','C','D'],
+            choices1: ['Hello World','Please Help Me','Computers Are Great','Helllllllooo'],
             choices2: ['A','B','C','D'],
             choices3: ['A','B','C','D'],
             choices4: ['A','B','C','D'],
@@ -105,7 +87,7 @@
 
         //answers: actual single answers for each question
         answers: {
-            answer1: 'A',
+            answer1: 'Hello World',
             answer2: 'B',
             answer3: 'C',
             answer4: 'D',
@@ -119,40 +101,51 @@
 
         //picks question from question object, appends to question div
         generateQuestion() {
-            console.log(Object.values(this.questions)[this.counter]);
+            questionDiv.empty();
             questionDiv.append(Object.values(this.questions)[this.counter]);
-
+            this.counter++;
         },
 
-        //finds corresponding 
+        //adds buttons with corresponding possible answers to the page
         generateChoices() {
             let choicesArr = Object.values(this.choices)[this.counter];
             console.log(choicesArr);
-            for (let i = 0; i < 5; i++) {
-                answerDiv.append(choicesArr[i]);
+            for (let i = 0; i < 4; i++) {
+                let choiceButton = '<div class="col text-left ml-3"> <a class="btn btn-primary answer-choice btn-lg mx-auto my-3" href="#" role="button">' + choicesArr[i] + '</a> </div>';
+                answerDiv.append(choiceButton);
             }
         },
 
-        answerQuestion(){
-
-        },
-            //reset function to empty divs
+        //reset to set score/incorrect #s back to 0 and empty divs
         reset() {
             questionDiv.empty();
             timerDiv.empty();
             answerDivFirst.empty();
             answerDivSecond.empty();
+            introContainer.show();
         }
     }
 
+    
     $('#play-game').on('click', function() {
         csTrivia.generateQuestion();
         introContainer.hide();
         csTrivia.generateChoices();
     });
 
-    $('.answer').on('click', function() {
-        csTrivia.answerQuestion();
+    $(document).on('click', '.answer-choice', function() {
+        //if button clicked contains the right answer
+        if ($(this).html() === Object.values(csTrivia.answers)[csTrivia.counter]) {
+            csTrivia.score++;
+            console.log(csTrivia.score);
+            csTrivia.generateQuestion();
+        } else if (timer = 0) {
+            //timer runs out
+            csTrivia.generateQuestion();
+        } else {
+            csTrivia.incorrectAnswers++;
+            csTrivia.generateQuestion();
+        }
     });
 
 
