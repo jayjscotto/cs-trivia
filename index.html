@@ -20,8 +20,8 @@
 <!--HEADER-->
 <div class="row">
     <div class="col">
-        <nav class="navbar navbar-expand-lg navbar-light mx-5 border-top-0 rounded">
-                <a class="navbar-brand" href="https://jayjscotto.github.io/bootstrap-portfolio/"><h3 class="title"> Jason Scotto <span class="cyan"> . </span></h3></a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark mx-5 border-top-0 rounded">
+                <a class="navbar-brand" href="https://jayjscotto.github.io/bootstrap-portfolio/"><h3 class="title text-light"> Jason Scotto <span class="cyan"> . </span></h3></a>
         </nav>
     </div>
 </div>
@@ -35,11 +35,34 @@
             </div>
         </div>
     <div class="animated bounceIn jumbotron text-dark">
-        <h1 class="animated pulse delay-2s display-4 text-center">console.log('Hello, world!');</h1>
-        <p class="lead">This is a simple computer science based trivia game, that records your score, and your total time used to answer all the questions.</p>
-        <hr class="my-4">
-        <p> </p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Check out the code on Github!</a>
+        <div id="game-container">
+            <div class="row">
+                <div id="question-div" class="col-9 h2 text-center">
+                    
+                </div>
+                <div id="timer-div"class="col-3">
+                
+                </div>
+            </div>
+            <div class="row">
+                <div id="answer-div" class="col-6 ml-3">
+
+                </div>
+            </div>
+            <div id="intro-container">
+                <h1 class="animated pulse delay-2s display-4 text-center mb-5">console.log('Hello, world!');</h1>
+                <p class="lead mx-5">This is a simple computer science based trivia game, that records your score, and your total time used to answer all the questions.</p>
+                <hr class="my-4">
+                <p> </p>
+                <div class="row">
+                    <div class="col text-center">
+                        <a class="btn btn-primary btn-lg mr-5" href="#" role="button">Check out the code on Github!</a>
+                        <a id="play-game" class="btn btn-danger btn-lg ml-5" href="#" role="button">Play the game!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
     
     </div>
