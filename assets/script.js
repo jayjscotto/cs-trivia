@@ -148,7 +148,7 @@ $(document).ready(function() {
             answerDiv.empty();
             let choicesArr = Object.values(this.choices)[counter];
             for (let i = 0; i < 4; i++) {
-                let choiceButton = '<div class="col text-left ml-3"> <a class="btn btn-primary answer-choice btn-lg mx-auto my-3" href="#" role="button">' + choicesArr[i] + '</a> </div>';
+                let choiceButton = '<div class="row text-center"> <a class="btn btn-primary answer-choice btn-lg mx-auto my-3" href="#" role="button">' + choicesArr[i] + '</a> </div>';
                 answerDiv.append(choiceButton);
             }
         },
@@ -173,7 +173,7 @@ $(document).ready(function() {
             wrongAnswers.text('Incorrect Answers: ' + this.incorrectAnswers).attr('class', 
             'text-center');
 
-            let resetBtn = '<div class="col text-left ml-3"> <a id="reset" class="btn btn-danger answer-choice btn-lg mx-auto my-3" href="#" role="button"> Try Again? </a> </div>'
+            let resetBtn = '<div class="col text-left mx-auto"> <a id="reset" class="btn btn-danger answer-choice btn-lg mx-auto my-3" href="#" role="button"> Try Again? </a> </div>'
 
             //append stats and reset button to appropriate location
             questionDiv.append(gameOver);
@@ -223,14 +223,10 @@ $(document).ready(function() {
             else if (counter >= 9) {
                 csTrivia.endGame();
             }
-            // console.log('score: ' + csTrivia.score);  
-            // console.log('incorrect: ' + csTrivia.incorrectAnswers);
-            // console.log('counter' + counter);
         });
 
     $(document).on('click', '#reset', function () {
         csTrivia.reset();
-        csTrivia.playGame();
         scoreDiv.empty();
         incorrect.empty();
         reset.empty();
