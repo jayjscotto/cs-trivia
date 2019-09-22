@@ -23,3 +23,8 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
+
+#timer-div {
+    font-size: 108px;
+    color: red;
+}

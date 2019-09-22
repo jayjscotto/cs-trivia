@@ -31,29 +31,36 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1 class="display-4 text-center text-underscore typography mb-3">CS Trivia</h1>
+                <h1 class="display-4 text-center text-underscore typography mb-3">Tech Trivia</h1>
             </div>
         </div>
     <div class="animated bounceIn jumbotron text-dark">
         <div id="game-container">
             <div class="row">
                 <div class="col">
-                    <div id="question-div" class="col-9 h3">
+                    <div id="question-div" class="col text-center display-4 h3">
                         
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div id="answer-div" class="col">
+                <div id="score" class="col text-center"> </div>
+                <div id="incorrect" class="col text-center"> </div>
+                <div id="answer-div" class="col text-center">
 
                 </div>
                 <div id="timer-div" class="col m-auto text-center display-1 animated pulse delay-2s">
 
                 </div>
             </div>
+            <div class="row">
+                <div id="reset" class="col mx-auto">
+
+                </div>
+            </div>
             <div id="intro-container">
                 <h1 class="animated pulse delay-2s display-4 text-center mb-5">console.log('Hello, world!');</h1>
-                <p class="lead mx-5">This is a simple computer science based trivia game, that records your score, and your total time used to answer all the questions.</p>
+                <p class="lead mx-5">This is a simple tech based trivia game, that records the number of correct and incorrect answers. Only 15 seconds to answer each question!</p>
                 <hr class="my-4">
                 <p> </p>
                 <div class="row">

@@ -48,6 +48,10 @@ $(document).ready(function() {
     const questionDiv = $('#question-div');
     const timerDiv = $('#timer-div');
     const answerDiv = $('#answer-div');
+    const scoreDiv = $('#score');
+    const incorect = $('#incorrect');
+    const reset = $('#reset');
+
     let time = 16;
     let counter = 0;
 
@@ -73,7 +77,7 @@ $(document).ready(function() {
         //choices: possible answers for each question
         choices: {
             choices1: ['1967','1946','1997','1985'],
-            choices2: ['Apple','Microsoft','Sun Microsystems','Macintosh'],
+            choices2: ['Apple','Microsoft','Sun Microsystems','Netscape '],
             choices3: ['Mocha','LiveScript','ECMAScript','Javascript'],
             choices4: ['1986','2001','1992','1975'],
             choices5: ['ISO','ASCII','Unicode','UTF'],
@@ -90,18 +94,19 @@ $(document).ready(function() {
             answer2: 'Sun Microsystems',
             answer3: 'LiveScript',
             answer4: '1975',
-            answer5: 'C',
+            answer5: 'ASCII',
             answer6: '80KB',
             answer7: '10000000000000000',
-            answer8: 'A',
+            answer8: 'Flip Flop',
             answer9: 'Silicon',
             answer10: "I've been looking the whole time",
         },
 
-        //timer
+        //// BEGIN TIMER LOGIC
         timerRunning: false,
         timer: '',
 
+        //starts the timer
         startTimer() {
             if (!this.timerRunning) {   
                 this.timer = setInterval(this.count, 1000);
@@ -117,19 +122,24 @@ $(document).ready(function() {
             }
             if(time === 0) {
                 csTrivia.stopTimer();
-
+                csTrivia.incorrectAnswers++;
+                counter++;
+                csTrivia.generateQuestion();
+                csTrivia.generateChoices();
             }
         },
 
         stopTimer() {
             clearInterval(this.timer);
             this.timerRunning = false;
-            time = 15
-            console.log(time);
+            time = 15;
         },
+
+        //// END TIMER LOGIC
 
         //picks question from question object, appends to question div
         generateQuestion() {
+            console.log(Object.values(csTrivia.answers)[counter]);
             questionDiv.empty();
             questionDiv.append(Object.values(this.questions)[counter]);
             this.startTimer();
@@ -137,6 +147,7 @@ $(document).ready(function() {
 
         //adds buttons with corresponding possible answers to the page
         generateChoices() {
+            answerDiv.empty();
             let choicesArr = Object.values(this.choices)[counter];
             for (let i = 0; i < 4; i++) {
                 let choiceButton = '<div class="col text-left ml-3"> <a class="btn btn-primary answer-choice btn-lg mx-auto my-3" href="#" role="button">' + choicesArr[i] + '</a> </div>';
@@ -144,52 +155,72 @@ $(document).ready(function() {
             }
         },
 
+        endGame() {
+            questionDiv.empty();
+            answerDiv.empty();
+            timerDiv.empty();
+            scoreDiv.toggle();
+            incorect.toggle();
+            let gameOver = $('<h1>');
+            gameOver.text('Game Over:').attr('class', 'text-center');
+            let finalScore = $('<h2>');
+            finalScore.text('Correct Answers: ' + this.score).attr('class', 'text-center');
+            let wrongAnswers = $('<h2>');
+            wrongAnswers.text('Incorrect Answers: ' + this.incorrectAnswers).attr('class', 
+            'text-center');
+            let resetBtn = '<div class="col text-left ml-3"> <a id="reset" class="btn btn-danger answer-choice btn-lg mx-auto my-3" href="#" role="button"> Reset </a> </div>'
+            questionDiv.append(gameOver);
+            scoreDiv.append(finalScore);
+            incorrect.append(wrongAnswers);
+            reset.append(resetBtn);
+        },
+
         //reset to set score/incorrect #s back to 0 and empty divs
         reset() {
-            questionDiv.empty();
-            timerDiv.empty();
-            answerDivFirst.empty();
-            answerDivSecond.empty();
+            score = 0;
+            this.incorrectAnswers = 0;
+            counter = 0;
+            this.playGame();
+
+        },
+
+        playGame() {
+            scoreDiv.toggle();
+            incorect.toggle();
+            csTrivia.generateQuestion();
             introContainer.toggle();
-            time = 15;
+            csTrivia.generateChoices();
         }
+
     }
 
-    $('#play-game').on('click', function() {
-        csTrivia.generateQuestion();
-        introContainer.toggle();
-        csTrivia.generateChoices();
-    });
+    $('#play-game').on('click', csTrivia.playGame);
 
     $(document).on('click', '.answer-choice', function evaluateAnswer() {
             csTrivia.stopTimer();
-            console.log($(this).html())
-            console.log(Object.values(csTrivia.answers)[counter]);
+            console.log($(this).html());
             
             //if button clicked contains the right answer
-            if ($(this).html() === Object.values(csTrivia.answers)[counter]) {
+            if ($(this).html() === Object.values(csTrivia.answers)[counter] && counter < 9) {
                 csTrivia.score++;
-                console.log('score: ' + csTrivia.score);
-                
-            } 
-            //if the timer runs out
-            else if (time === 0) {
-                //timer runs out
-                csTrivia.stopTimer();
-                csTrivia.incorrectAnswers++;
-                console.log('incorrect: ' + csTrivia.incorrectAnswers);
-            } 
-            //if the answer is wrong
-            else {
-                csTrivia.incorrectAnswers++;
+                counter++;
+                csTrivia.generateQuestion(); 
+                csTrivia.generateChoices();
             }
-            counter++;
-            answerDiv.empty();
-            csTrivia.generateQuestion();
-            csTrivia.generateChoices();
-            console.log('counter' +counter)
+            else if ($(this).html() != Object.values(csTrivia.answers)[counter] && counter < 9) {
+                csTrivia.incorrectAnswers++;
+                counter++;
+                csTrivia.generateQuestion();
+                csTrivia.generateChoices();
+            }
+            else if (counter >= 9) {
+                csTrivia.endGame();
+            }
+            console.log('score: ' + csTrivia.score);  
+            console.log('incorrect: ' + csTrivia.incorrectAnswers);
+            console.log('counter' + counter);
         });
 
-
+    $(document).on('click', '#reset', csTrivia.reset());
 
 })
