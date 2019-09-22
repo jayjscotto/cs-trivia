@@ -43,13 +43,12 @@
         //Give option to check out the code on github
 
 $(document).ready(function() {
-    const gameContainer = $('#game-container');
     const introContainer = $('#intro-container');
     const questionDiv = $('#question-div');
     const timerDiv = $('#timer-div');
     const answerDiv = $('#answer-div');
     const scoreDiv = $('#score');
-    const incorect = $('#incorrect');
+    const incorrect = $('#incorrect');
     const reset = $('#reset');
 
     let time = 16;
@@ -139,7 +138,6 @@ $(document).ready(function() {
 
         //picks question from question object, appends to question div
         generateQuestion() {
-            console.log(Object.values(csTrivia.answers)[counter]);
             questionDiv.empty();
             questionDiv.append(Object.values(this.questions)[counter]);
             this.startTimer();
@@ -155,20 +153,29 @@ $(document).ready(function() {
             }
         },
 
+        //displays stats and reset button to restart game;
         endGame() {
+            //empty divs
             questionDiv.empty();
             answerDiv.empty();
             timerDiv.empty();
+            //toggle score stats:
             scoreDiv.toggle();
-            incorect.toggle();
+            incorrect.toggle();
+            //set stats & reset button content
             let gameOver = $('<h1>');
             gameOver.text('Game Over:').attr('class', 'text-center');
+
             let finalScore = $('<h2>');
             finalScore.text('Correct Answers: ' + this.score).attr('class', 'text-center');
+
             let wrongAnswers = $('<h2>');
             wrongAnswers.text('Incorrect Answers: ' + this.incorrectAnswers).attr('class', 
             'text-center');
+
             let resetBtn = '<div class="col text-left ml-3"> <a id="reset" class="btn btn-danger answer-choice btn-lg mx-auto my-3" href="#" role="button"> Reset </a> </div>'
+
+            //append stats and reset button to appropriate location
             questionDiv.append(gameOver);
             scoreDiv.append(finalScore);
             incorrect.append(wrongAnswers);
@@ -177,28 +184,28 @@ $(document).ready(function() {
 
         //reset to set score/incorrect #s back to 0 and empty divs
         reset() {
-            score = 0;
+            this.score = 0;
             this.incorrectAnswers = 0;
             counter = 0;
             this.playGame();
-
         },
 
+        //beings game;
         playGame() {
             scoreDiv.toggle();
-            incorect.toggle();
+            incorrect.toggle();
             csTrivia.generateQuestion();
-            introContainer.toggle();
+            introContainer.detach();
             csTrivia.generateChoices();
         }
 
     }
 
+    //button click listener to play game on intro page
     $('#play-game').on('click', csTrivia.playGame);
 
     $(document).on('click', '.answer-choice', function evaluateAnswer() {
             csTrivia.stopTimer();
-            console.log($(this).html());
             
             //if button clicked contains the right answer
             if ($(this).html() === Object.values(csTrivia.answers)[counter] && counter < 9) {
@@ -216,11 +223,17 @@ $(document).ready(function() {
             else if (counter >= 9) {
                 csTrivia.endGame();
             }
-            console.log('score: ' + csTrivia.score);  
-            console.log('incorrect: ' + csTrivia.incorrectAnswers);
-            console.log('counter' + counter);
+            // console.log('score: ' + csTrivia.score);  
+            // console.log('incorrect: ' + csTrivia.incorrectAnswers);
+            // console.log('counter' + counter);
         });
 
-    $(document).on('click', '#reset', csTrivia.reset());
+    $(document).on('click', '#reset', function () {
+        csTrivia.reset();
+        csTrivia.playGame();
+        scoreDiv.empty();
+        incorrect.empty();
+        reset.remove();
+    });
 
 })
