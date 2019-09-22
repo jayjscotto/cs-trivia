@@ -173,7 +173,7 @@ $(document).ready(function() {
             wrongAnswers.text('Incorrect Answers: ' + this.incorrectAnswers).attr('class', 
             'text-center');
 
-            let resetBtn = '<div class="col text-left ml-3"> <a id="reset" class="btn btn-danger answer-choice btn-lg mx-auto my-3" href="#" role="button"> Reset </a> </div>'
+            let resetBtn = '<div class="col text-left ml-3"> <a id="reset" class="btn btn-danger answer-choice btn-lg mx-auto my-3" href="#" role="button"> Try Again? </a> </div>'
 
             //append stats and reset button to appropriate location
             questionDiv.append(gameOver);
@@ -233,7 +233,7 @@ $(document).ready(function() {
         csTrivia.playGame();
         scoreDiv.empty();
         incorrect.empty();
-        reset.remove();
+        reset.empty();
     });
 
 })
