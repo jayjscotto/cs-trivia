@@ -59,46 +59,74 @@ $(document).ready(function() {
         score: 0,
         incorrectAnswers: 0,
 
-        //questions: object property for each question
-        questions: {
-            question1: 'What year was the first computer invented?',
-            question2: 'Which company first developed the Java programming language?',
-            question3: "What was the original name for Javascript on it's first release?",
-            question4: 'What year was Microsoft Founded?',
-            question5: 'A means of encoding text in which each symbol is represented by 16 bits?',
-            question6: 'How much memory could the first floppy disc hold?',
-            question7: 'How many bytes are in 2 Petabytes?',
-            question8: 'A digital circuit capable of holding a single digit?',
-            question9: 'What common element is used in the manufacture of computer chips?',
-            question10: 'Does the console display every answer to these questions?',
-        },
+        questions : [
+            {question: 'What year was the first computer invented?',
+            choices: ['1967','1946','1997','1985'],
+            answer: ['1946'],
+            },
 
-        //choices: possible answers for each question
-        choices: {
-            choices1: ['1967','1946','1997','1985'],
-            choices2: ['Apple','Microsoft','Sun Microsystems','Netscape '],
-            choices3: ['Mocha','LiveScript','ECMAScript','Javascript'],
-            choices4: ['1986','2001','1992','1975'],
-            choices5: ['ISO','ASCII','Unicode','UTF'],
-            choices6: ['80KB','90MB','2MB','1GB'],
-            choices7: ['300000','10000000000000000','400000000','10247681290'],
-            choices8: ['Letter','Bit','Flip Flop','Key'],
-            choices9: ['Graphite','Lead','Silicon','Aluminum'],
-            choices10: ['It might', "I've been looking the whole time", 'No!', 'Probably..'],
-        },
+            {question: 'Which company first developed the Java programming language?',
+             choices: ['Apple','Microsoft','Sun Microsystems','Netscape '],
+             answer: ['Sun Microsystems'],
+            },
 
-        //answers: actual single answers for each question
-        answers: {
-            answer1: '1946',
-            answer2: 'Sun Microsystems',
-            answer3: 'LiveScript',
-            answer4: '1975',
-            answer5: 'ASCII',
-            answer6: '80KB',
-            answer7: '10000000000000000',
-            answer8: 'Flip Flop',
-            answer9: 'Silicon',
-            answer10: "I've been looking the whole time",
+            {question: "What was the original name for Javascript on it's first release?",
+             choices: ['Mocha','LiveScript','ECMAScript','Javascript'],
+             answer: ['LiveScript'],
+            },
+
+            {question: "What year was Microsoft Founded?",
+             choices: ['1986','2001','1992','1975'],
+             answer: ['1975'],
+            },
+
+            {question: 'A means of encoding text in which each symbol is represented by 16 bits?',
+             choices: ['ISO','ASCII','Unicode','UTF'],
+             answer: ['ASCII'],
+            },
+
+            {question: 'How much memory could the first floppy disc hold?',
+             choices: ['80KB','90MB','2MB','1GB'],
+             answer: ["80KB"],
+            },
+
+            {question: 'How many bytes are in 2 Petabytes?',
+             choices: ['300000','10000000000000000','400000000','10247681290'],
+             answer: ['10000000000000000'],
+            },
+
+            {question: 'A digital circuit capable of holding a single digit?',
+             choices: ['Letter','Bit','Flip Flop','Key'],
+             answer: ['Flip Flop'],
+            },
+
+            {question: 'What common element is used in the manufacture of computer chips?',
+             choices: ['Graphite','Lead','Silicon','Aluminum'],
+             answer: ['Silicon'],
+            },
+
+            {question: 'Does the console display every answer to these questions?',
+             choices: ['It might', "I've been looking the whole time", 'No!', 'Probably..'],
+             answer: ["I've been looking the whole time"],
+            }],
+
+        //shuffle function
+        //takes in array as parameter
+        //for loop that iterates over each index
+            //assigns a random index to that item with the placeholder and j variables
+            //Fisher Yates method
+        shuffle(array) {
+            let i = 0;
+            let j = 0;
+            let placeholder = null;
+
+            for (let i = array.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                placeholder = array[i];
+                array[i] = array[j];
+                array[j] = placeholder;
+            }
+            return array;
         },
 
         //// BEGIN TIMER LOGIC
@@ -139,14 +167,14 @@ $(document).ready(function() {
         //picks question from question object, appends to question div
         generateQuestion() {
             questionDiv.empty();
-            questionDiv.append(Object.values(this.questions)[counter]);
+            questionDiv.append(Object.values(this.questions[counter].question));
             this.startTimer();
         },
 
         //adds buttons with corresponding possible answers to the page
         generateChoices() {
             answerDiv.empty();
-            let choicesArr = Object.values(this.choices)[counter];
+            let choicesArr = Object.values(this.questions[counter].choices);
             for (let i = 0; i < 4; i++) {
                 let choiceButton = '<div class="row text-center"> <a class="btn btn-primary answer-choice btn-lg mx-auto my-3" href="#" role="button">' + choicesArr[i] + '</a> </div>';
                 answerDiv.append(choiceButton);
@@ -192,6 +220,7 @@ $(document).ready(function() {
 
         //beings game;
         playGame() {
+            csTrivia.shuffle(csTrivia.questions);
             scoreDiv.toggle();
             incorrect.toggle();
             csTrivia.generateQuestion();
@@ -207,14 +236,16 @@ $(document).ready(function() {
     $(document).on('click', '.answer-choice', function evaluateAnswer() {
             csTrivia.stopTimer();
             
+            console.log(csTrivia.questions[counter].answer[0]);
+
             //if button clicked contains the right answer
-            if ($(this).html() === Object.values(csTrivia.answers)[counter] && counter < 9) {
+            if ($(this).html() === csTrivia.questions[counter].answer[0] && counter < 9) {
                 csTrivia.score++;
                 counter++;
                 csTrivia.generateQuestion(); 
                 csTrivia.generateChoices();
             }
-            else if ($(this).html() != Object.values(csTrivia.answers)[counter] && counter < 9) {
+            else if ($(this).html() != csTrivia.questions[counter].answer[0] && counter < 9) {
                 csTrivia.incorrectAnswers++;
                 counter++;
                 csTrivia.generateQuestion();
@@ -232,4 +263,5 @@ $(document).ready(function() {
         reset.empty();
     });
 
+    
 })
